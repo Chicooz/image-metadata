@@ -28,6 +28,7 @@
     "url": "https://github.com/ludow/image-metadata/issues"
   },
   "devDependencies": {
-    "mocha": "~1.13.0"
+    "mocha": "~1.13.0",
+    "chai": "~1.8.1"
   }
 }
