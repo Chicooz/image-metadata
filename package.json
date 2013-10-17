@@ -1,0 +1,33 @@
+{
+  "name": "image-metadata",
+  "version": "0.0.0",
+  "description": "Images metadata parsing. Reader only for now.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ludow/image-metadata.git"
+  },
+  "keywords": [
+    "images",
+    "metadata",
+    "iptc",
+    "exif",
+    "xmp",
+    "jpeg",
+    "jpg",
+    "png",
+    "gif",
+    "tiff"
+  ],
+  "author": "@ludowic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ludow/image-metadata/issues"
+  },
+  "devDependencies": {
+    "mocha": "~1.13.0"
+  }
+}
