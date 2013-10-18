@@ -93,4 +93,43 @@ describe('MarkerReader', function() {
     });
   });
 
+  describe('#nextLong()', function () {
+    it('return next unsigned long in big endian format', function () {
+
+      var buf = new Buffer(4);
+      buf.writeUInt32BE(0xfeedface, 0);
+      reader = new MarkerReader(buf);
+
+      expect(reader.nextLong()).to.equal(0xfeedface);
+    });
+
+    it('return next unsigned long in low endian format', function () {
+
+      var buf = new Buffer(4);
+      buf.writeUInt32BE(0xfeedface, 0);
+      reader = new MarkerReader(buf);
+
+      expect(reader.nextLong('low')).to.equal(0xcefaedfe);
+    });
+  });
+
+  describe('#nextSignedLong()', function () {
+    it('return next signed long in big endian format', function () {
+
+      var buf = new Buffer(4);
+      buf.writeInt32BE(0x424d313d, 0);
+      reader = new MarkerReader(buf);
+
+      expect(reader.nextSignedLong()).to.equal(0x424d313d);
+    });
+    it('return next signed long in low endian format', function () {
+
+      var buf = new Buffer(4);
+      buf.writeInt32BE(0x424d313d, 0);
+      reader = new MarkerReader(buf);
+
+      expect(reader.nextSignedLong('low')).to.equal(0x3d314d42);
+    });
+  });
+
 });
