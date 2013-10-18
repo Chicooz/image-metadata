@@ -1,3 +1,6 @@
+/*global describe:true,it:true */
+'use strict';
+
 var expect = require('chai').expect;
 
 var BufferWrapper = require('../lib/buffer-wrapper');
@@ -7,13 +10,13 @@ describe('BufferWrapper', function() {
   describe('constructor', function() {
 
     it('throw error if given buffer is not a Buffer', function() {
-      var fn = function () { new BufferWrapper(false); };
-      expect(fn).to.throw('Invalid Buffer');
+      var fn = function () { return new BufferWrapper(false); };
+      expect(fn).to.Throw('Invalid Buffer');
     });
 
     it('throw error if given buffer a Buffer', function() {
-      var fn = function () { new BufferWrapper(new Buffer(8)); };
-      expect(fn).to.not.throw('Invalid Buffer');
+      var fn = function () { return new BufferWrapper(new Buffer(8)); };
+      expect(fn).to.not.Throw('Invalid Buffer');
     });
 
     it('define start and end', function () {
@@ -76,7 +79,7 @@ describe('BufferWrapper', function() {
 
       var buf = new Buffer(4);
       buf.writeInt32BE(0x424d313d, 0);
-      reader = new BufferWrapper(buf);
+      var reader = new BufferWrapper(buf);
       reader.setBigEndianness(true);
 
       expect(reader.nextShort()).to.equal(0x424d);
