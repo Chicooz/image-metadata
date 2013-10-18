@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
 
-var MarkerReader = require('..').MarkerReader;
+var MarkerReader = require('../lib/marker-reader');
 
 var reader;
 
@@ -50,5 +50,47 @@ describe('MarkerReader', function() {
     });
   });
 
+  describe('#nextShort()', function () {
+    it('return next unsigned short in big endian format', function () {
+
+      var buf = new Buffer(4);
+      buf.writeUInt32BE(0xfeedface, 0);
+      reader = new MarkerReader(buf);
+
+      expect(reader.nextShort()).to.equal(0xfeed);
+      expect(reader.nextShort()).to.equal(0xface);
+    });
+
+    it('return next unsigned short in low endian format', function () {
+
+      var buf = new Buffer(4);
+      buf.writeUInt32BE(0xedfecefa, 0);
+      reader = new MarkerReader(buf);
+
+      expect(reader.nextShort('low')).to.equal(0xfeed);
+      expect(reader.nextShort('low')).to.equal(0xface);
+    });
+  });
+
+  describe('#nextSignedShort()', function () {
+    it('return next signed short in big endian format', function () {
+
+      var buf = new Buffer(4);
+      buf.writeInt32BE(0x424d313d, 0);
+      reader = new MarkerReader(buf);
+
+      expect(reader.nextSignedShort()).to.equal(0x424d);
+      expect(reader.nextSignedShort()).to.equal(0x313d);
+    });
+    it('return next signed short in low endian format', function () {
+
+      var buf = new Buffer(4);
+      buf.writeInt32BE(0x424d313d, 0);
+      reader = new MarkerReader(buf);
+
+      expect(reader.nextSignedShort('low')).to.equal(0x4d42);
+      expect(reader.nextSignedShort('low')).to.equal(0x3d31);
+    });
+  });
 
 });
