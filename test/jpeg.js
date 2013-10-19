@@ -1,11 +1,13 @@
 /*global describe:true,it:true */
 'use strict';
 
+var libpath = process.env['IMAGE_METADATA_COV'] ? '../lib-cov' : '../lib';
+
 var fs = require('fs');
 
 var expect = require('chai').expect;
 
-var JpegParser = require('../lib/jpeg');
+var JpegParser = require(libpath + '/jpeg');
 
 describe('JpegParser', function() {
 

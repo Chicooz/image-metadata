@@ -1,9 +1,10 @@
 /*global describe:true,it:true */
 'use strict';
 
+var libpath = process.env['IMAGE_METADATA_COV'] ? '../lib-cov' : '../lib';
 var expect = require('chai').expect;
 
-var BufferWrapper = require('../lib/buffer-wrapper');
+var BufferWrapper = require(libpath + '/buffer-wrapper');
 
 describe('BufferWrapper', function() {
 
