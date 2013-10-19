@@ -2,9 +2,8 @@
   "name": "image-metadata",
   "version": "0.0.0",
   "description": "Images metadata parsing. Reader only for now.",
-  "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "make test-coveralls"
   },
   "repository": {
     "type": "git",
@@ -22,7 +21,6 @@
     "gif",
     "tiff"
   ],
-  "author": "@ludowic",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ludow/image-metadata/issues"

@@ -13,6 +13,7 @@ test-cov:
 
 test-coveralls:
 	$(MAKE) lib-cov
+	$(MAKE) test REPORTER=spec
 	echo TRAVIS_JOB_ID $(TRAVIS_JOB_ID)
 	@IMAGE_METADATA_COV=1 $(MAKE) test REPORTER=mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js
 	rm -rf lib-cov
