@@ -1,7 +1,7 @@
 {
   "name": "image-metadata",
   "version": "0.0.0",
-  "description": "Images metadata parsing. Reader only for now.",
+  "description": "Images metadata parsing. Reader only for now. Work in progress, don't use it for production.",
   "scripts": {
     "test": "make test-coveralls"
   },
