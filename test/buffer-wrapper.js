@@ -14,9 +14,12 @@ describe('BufferWrapper', function() {
       expect(fn).to.Throw('Invalid Buffer');
     });
 
-    it('throw error if given buffer a Buffer', function() {
-      var fn = function () { return new BufferWrapper(new Buffer(8)); };
+    it('not throw error if given buffer a Buffer', function() {
+      var reader;
+      var buf = new Buffer(8);
+      var fn = function () { reader = new BufferWrapper(buf); };
       expect(fn).to.not.Throw('Invalid Buffer');
+      expect(reader.buffer).to.equal(buf);
     });
 
     it('define start and end', function () {
