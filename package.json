@@ -29,6 +29,8 @@
   },
   "devDependencies": {
     "mocha": "~1.13.0",
-    "chai": "~1.8.1"
+    "chai": "~1.8.1",
+    "coveralls": "~2.3.0",
+    "mocha-lcov-reporter": "0.0.1"
   }
 }

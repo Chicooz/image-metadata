@@ -1,9 +1,20 @@
-test:
-	mocha
+REPORTER = spec
 
-coverage:
+test:
+	./node_modules/.bin/mocha -b --reporter $(REPORTER)
+
+lib-cov:
 	jscoverage --no-highlight lib lib-cov
-	IMAGE_METADATA_COV=1 mocha -R html-cov > coverage.html
+
+test-cov:
+	$(MAKE) lib-cov
+	@IMAGE_METADATA_COV=1 $(MAKE) test REPORTER=html-cov > coverage.html
+	rm -rf lib-cov
+
+test-coveralls:
+	$(MAKE) lib-cov
+	echo TRAVIS_JOB_ID $(TRAVIS_JOB_ID)
+	@IMAGE_METADATA_COV=1 $(MAKE) test REPORTER=mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js
 	rm -rf lib-cov
 
 .PHONY: test
