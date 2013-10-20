@@ -28,7 +28,6 @@ describe('BufferWrapper', function() {
       expect(reader).to.have.property('offset', 0);
       expect(reader).to.have.property('end', reader.length);
     });
-
   });
 
   describe('#nextUByte()', function () {
@@ -40,6 +39,15 @@ describe('BufferWrapper', function() {
 
       expect(reader.nextUByte()).to.equal(0xfe);
       expect(reader.nextUByte()).to.equal(0xed);
+    });
+
+    it('return false if no bytes to read', function () {
+      var buf = new Buffer(1);
+      buf.writeUInt8(0xfe, 0);
+      var reader = new BufferWrapper(buf);
+
+      expect(reader.nextUByte()).to.equal(0xfe);
+      expect(reader.nextUByte()).to.equal(false);
     });
   });
 
@@ -53,6 +61,15 @@ describe('BufferWrapper', function() {
       expect(reader.nextByte()).to.equal(-2);
       expect(reader.nextByte()).to.equal(2);
     });
+
+    it('return false if no bytes to read', function () {
+      var buf = new Buffer(1);
+      buf.writeUInt8(0x00, 0);
+      var reader = new BufferWrapper(buf);
+
+      expect(reader.nextByte()).to.equal(0x00);
+      expect(reader.nextByte()).to.equal(false);
+    });
   });
 
   describe('#nextUShort()', function () {
@@ -61,7 +78,6 @@ describe('BufferWrapper', function() {
       var buf = new Buffer(4);
       buf.writeUInt32BE(0xfeedface, 0);
       var reader = new BufferWrapper(buf);
-      reader.setBigEndianness(true);
 
       expect(reader.nextUShort()).to.equal(0xfeed);
       expect(reader.nextUShort()).to.equal(0xface);
@@ -72,9 +88,20 @@ describe('BufferWrapper', function() {
       var buf = new Buffer(4);
       buf.writeUInt32BE(0xedfecefa, 0);
       var reader = new BufferWrapper(buf);
+      reader.setBigEndianness(false);
 
       expect(reader.nextUShort()).to.equal(0xfeed);
       expect(reader.nextUShort()).to.equal(0xface);
+    });
+
+    it('return false if not enough bytes to read', function () {
+      var buf = new Buffer(3);
+      buf.writeUInt16BE(0xfeed, 0);
+      buf.writeUInt8(0xfa, 2);
+      var reader = new BufferWrapper(buf);
+
+      expect(reader.nextUShort()).to.equal(0xfeed);
+      expect(reader.nextUShort()).to.equal(false);
     });
   });
 
@@ -84,19 +111,30 @@ describe('BufferWrapper', function() {
       var buf = new Buffer(4);
       buf.writeInt32BE(0x424d313d, 0);
       var reader = new BufferWrapper(buf);
-      reader.setBigEndianness(true);
 
       expect(reader.nextShort()).to.equal(0x424d);
       expect(reader.nextShort()).to.equal(0x313d);
     });
+
     it('return next signed short in low endian format', function () {
 
       var buf = new Buffer(4);
       buf.writeInt32BE(0x424d313d, 0);
       var reader = new BufferWrapper(buf);
+      reader.setBigEndianness(false);
 
       expect(reader.nextShort()).to.equal(0x4d42);
       expect(reader.nextShort()).to.equal(0x3d31);
+    });
+
+    it('return false if not enough bytes to read', function () {
+      var buf = new Buffer(3);
+      buf.writeUInt16BE(0x0101, 0);
+      buf.writeUInt8(0x02, 2);
+      var reader = new BufferWrapper(buf);
+
+      expect(reader.nextShort()).to.equal(0x0101);
+      expect(reader.nextShort()).to.equal(false);
     });
   });
 
@@ -106,7 +144,6 @@ describe('BufferWrapper', function() {
       var buf = new Buffer(4);
       buf.writeUInt32BE(0xfeedface, 0);
       var reader = new BufferWrapper(buf);
-      reader.setBigEndianness(true);
 
       expect(reader.nextULong()).to.equal(0xfeedface);
     });
@@ -116,8 +153,19 @@ describe('BufferWrapper', function() {
       var buf = new Buffer(4);
       buf.writeUInt32BE(0xfeedface, 0);
       var reader = new BufferWrapper(buf);
+      reader.setBigEndianness(false);
 
       expect(reader.nextULong()).to.equal(0xcefaedfe);
+    });
+
+    it('return false if not enough bytes to read', function () {
+      var buf = new Buffer(6);
+      buf.writeUInt32BE(0xfeedface, 0);
+      buf.writeUInt16BE(0xdeed, 4);
+      var reader = new BufferWrapper(buf);
+
+      expect(reader.nextULong()).to.equal(0xfeedface);
+      expect(reader.nextULong()).to.equal(false);
     });
   });
 
@@ -127,17 +175,28 @@ describe('BufferWrapper', function() {
       var buf = new Buffer(4);
       buf.writeInt32BE(0x424d313d, 0);
       var reader = new BufferWrapper(buf);
-      reader.setBigEndianness(true);
 
       expect(reader.nextLong()).to.equal(0x424d313d);
     });
+
     it('return next signed long in low endian format', function () {
 
       var buf = new Buffer(4);
       buf.writeInt32BE(0x424d313d, 0);
       var reader = new BufferWrapper(buf);
+      reader.setBigEndianness(false);
 
       expect(reader.nextLong()).to.equal(0x3d314d42);
+    });
+
+    it('return false if not enough bytes to read', function () {
+      var buf = new Buffer(6);
+      buf.writeUInt32BE(0x424d313d, 0);
+      buf.writeUInt16BE(0x2020, 4);
+      var reader = new BufferWrapper(buf);
+
+      expect(reader.nextLong()).to.equal(0x424d313d);
+      expect(reader.nextLong()).to.equal(false);
     });
   });
 
