@@ -8,6 +8,7 @@ var fs = require('fs');
 var expect = require('chai').expect;
 
 var JpegParser = require(libpath + '/jpeg');
+var BufferWrapper = require(libpath + '/buffer-wrapper');
 
 describe('JpegParser', function() {
 
@@ -21,9 +22,10 @@ describe('JpegParser', function() {
     it('not throw error if given buffer a Buffer', function() {
       var reader;
       var buf = new Buffer(8);
+      var bufWrapper = new BufferWrapper(buf);
       var fn = function () { reader = new JpegParser(buf); };
       expect(fn).to.not.Throw('Invalid Buffer');
-      expect(reader.buffer).to.equal(buf);
+      expect(reader.buffer).to.deep.equal(bufWrapper);
     });
 
   });
