@@ -31,5 +31,8 @@
     "coveralls": "~2.3.0",
     "mocha-lcov-reporter": "0.0.1",
     "jscoverage": "~0.3.8"
+  },
+  "dependencies": {
+    "colors": "~0.6.2"
   }
 }

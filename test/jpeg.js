@@ -12,33 +12,13 @@ var BufferWrapper = require(libpath + '/buffer-wrapper');
 
 describe('JpegParser', function() {
 
-  describe('constructor', function() {
-
-    it('throw error if given buffer is not a Buffer', function() {
-      var fn = function () { return new JpegParser(false); };
-      expect(fn).to.Throw('Invalid Buffer');
-    });
-
-    it('not throw error if given buffer a Buffer', function() {
-      var reader;
-      var buf = new Buffer(8);
-      var bufWrapper = new BufferWrapper(buf);
-      var fn = function () { reader = new JpegParser(buf); };
-      expect(fn).to.not.Throw('Invalid Buffer');
-      expect(reader.buffer).to.deep.equal(bufWrapper);
-    });
-
-  });
-
   describe('#isValid()', function () {
-
 
     it('return false if buffer is PNG content', function (done) {
 
       fs.readFile(__dirname + '/images/valid-png.png', function (err, buffer) {
         if(err) throw err;
-        var parser = new JpegParser(buffer);
-        expect(parser.isValid()).to.equal(false);
+        expect(JpegParser.isValid(buffer)).to.equal(false);
         done();
       });
 
@@ -48,8 +28,7 @@ describe('JpegParser', function() {
 
       fs.readFile(__dirname + '/images/fake-jpeg.jpg', function (err, buffer) {
         if(err) throw err;
-        var parser = new JpegParser(buffer);
-        expect(parser.isValid()).to.equal(false);
+        expect(JpegParser.isValid(buffer)).to.equal(false);
         done();
       });
 
@@ -59,9 +38,38 @@ describe('JpegParser', function() {
 
       fs.readFile(__dirname + '/images/valid-jpeg.jpg', function (err, buffer) {
         if(err) throw err;
-        var parser = new JpegParser(buffer);
-        expect(parser.isValid()).to.equal(true);
+        expect(JpegParser.isValid(buffer)).to.equal(true);
         done();
+      });
+
+    });
+
+  });
+
+  describe('#getInfos', function () {
+
+    it('return Error if something is wrong', function (done) {
+
+      fs.readFile(__dirname + '/images/fake-jpeg.jpg', function (err, buffer) {
+        if(err) throw err;
+        JpegParser.getInfos(buffer, function (err, data) {
+          expect(data).to.be.null;
+          expect(err).to.be.an.instanceof(Error);
+          done();
+        });
+      });
+
+    });
+
+    it('return data object if everything is fine', function (done) {
+
+      fs.readFile(__dirname + '/images/valid-jpeg.jpg', function (err, buffer) {
+        if(err) throw err;
+        JpegParser.getInfos(buffer, function (err, data) {
+          expect(data).to.be.an.instanceof(Object);
+          expect(err).to.be.null;
+          done();
+        });
       });
 
     });
